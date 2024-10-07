@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMG Mármores e Granitos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .social-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+
+        .about {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .admin-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .admin-options button {
+            width: 48%;
+        }
+
+        .logout, .register {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AMG Mármores e Granitos</h1>
+</header>
+
+<div class="container" id="loginContainer">
+    <h2>Login</h2>
+    <label for="username">Usuário:</label>
+    <input type="text" id="username" placeholder="Digite seu usuário">
+
+    <label for="password">Senha:</label>
+    <input type="password" id="password" placeholder="Digite sua senha">
+
+    <button onclick="login()">Entrar</button>
+
+    <div class="logout" id="forgotPassword">
+        <a href="#" onclick="forgotPassword()">Esqueci minha senha</a>
+    </div>
+
+    <div class="register" id="register">
+        <a href="#" onclick="showRegister()">Criar Conta</a>
+    </div>
+</div>
+
+<div class="container" id="registerContainer" style="display:none;">
+    <h2>Criar Conta</h2>
+    <label for="newUsername">Nome de Usuário:</label>
+    <input type="text" id="newUsername" placeholder="Escolha um nome de usuário">
+
+    <label for="newPassword">Senha:</label>
+    <input type="password" id="newPassword" placeholder="Escolha uma senha">
+
+    <label for="confirmPassword">Confirme a Senha:</label>
+    <input type="password" id="confirmPassword" placeholder="Confirme sua senha">
+
+    <label for="phoneNumber">Número de Celular:</label>
+    <input type="text" id="phoneNumber" placeholder="Digite seu número de celular">
+
+    <button onclick="sendVerificationCode()">Registrar</button>
+
+    <div class="register">
+        <a href="#" onclick="showLogin()">Voltar ao Login</a>
+    </div>
+</div>
+
+<div class="container" id="verifyContainer" style="display:none;">
+    <h2>Verificação de Conta</h2>
+    <label for="verificationCode">Código de Verificação:</label>
+    <input type="text" id="verificationCode" placeholder="Digite o código enviado para o seu celular">
+
+    <button onclick="verifyCode()">Verificar</button>
+
+    <div class="register">
+        <a href="#" onclick="showLogin()">Voltar ao Login</a>
+    </div>
+</div>
+
+<!-- Container para o Painel de Administração -->
+<div class="container" id="adminContainer" style="display:none;">
+    <h2>Painel de Administração</h2>
+
+    <label for="editOrder">Código do Pedido:</label>
+    <input type="text" id="editOrder" placeholder="Digite o código do pedido para editar">
+
+    <label for="progress">Atualizar Status do Progresso:</label>
+    <input type="text" id="progress" placeholder="Novo status do pedido">
+
+    <label for="stoneHistory">História da Pedra:</label>
+    <input type="text" id="stoneHistory" placeholder="Atualizar história da pedra">
+
+    <div class="admin-options">
+        <button onclick="updateOrder()">Atualizar Pedido</button>
+        <button onclick="generateAdminCode()">Gerar Código Administrador</button>
+    </div>
+
+    <h2>Gerenciar Usuários</h2>
+    <label for="editUser">Usuário:</label>
+    <input type="text" id="editUser" placeholder="Digite o nome do usuário para editar">
+
+    <div class="admin-options">
+        <button onclick="createUser()">Criar Login</button>
+        <button onclick="resetPassword()">Redefinir Senha</button>
+    </div>
+
+    <div class="logout">
+        <button onclick="logout()">Sair</button>
+    </div>
+</div>
+
+<!-- Container para o Painel do Cliente -->
+<div class="container" id="clientContainer" style="display:none;">
+    <h2>Painel do Cliente</h2>
+    <div id="clientCode"></div>
+    <button onclick="generateClientCode()">Gerar Código Cliente</button>
+</div>
+
+<div class="social-links">
+    <h3>Conecte-se Conosco</h3>
+    <a href="https://www.instagram.com/amgmarmoresegranitos" target="_blank">Instagram</a>
+    <a href="https://www.facebook.com/amgmarmoresegranitos" target="_blank">Facebook</a>
+    <a href="https://wa.me/554184065655" target="_blank">WhatsApp</a>
+</div>
+
+<footer>
+    <p>Contato: amgmarmoresegranitos@gmail.com</p>
+</footer>
+
+<div class="about">
+    <p>A AMG Mármores e Granitos foi fundada por Alexandro da Silva Vakiuti e Luana Rocha de Arzão no ano de 2019. Alexandro da Silva Vakiuti trabalha com as pedras há mais de 10 anos, exercendo sua função com maestria, competência e responsabilidade com o cliente.</p>
+</div>
+
+<script>
+    // Estrutura de usuários com seus papéis
+    let users = {
+        'admin': {password: 'admin123', role: 'admin'},
+        'cliente1': {password: '1234', role: 'cliente'},
+        'admin': {password: 'Abcd@123', role: 'alexandre'}
+    };
+
+    let orders = {
+        'COD123': {status: 'Pedido Realizado', history: 'A pedra é única, extraída com cuidado...'}
+    };
+
+    // Função de Login
+    function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Verificação do tipo de usuário
+        if (users[username] && users[username].password === password) {
+            if (users[username].role === 'admin') {
+                showAdminPanel();
+            } else {
+                showClientPanel();
+            }
+        } else {
+            alert("Usuário ou senha incorretos.");
+        }
+    }
+
+    function showAdminPanel() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("adminContainer").style.display = "block";
+    }
+
+    function showClientPanel() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("clientContainer").style.display = "block";
+        alert("Bem-vindo, cliente!");
+    }
+
+    function generateAdminCode() {
+        const code = 'ADM-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        alert("Código do Administrador: " + code);
+    }
+
+    function generateClientCode() {
+        const code = 'CLI-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById("clientCode").innerText = "Seu código é: " + code;
+    }
+
+    function showRegister() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("registerContainer").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("registerContainer").style.display = "none";
+        document.getElementById("verifyContainer").style.display = "none";
+        document.getElementById("loginContainer").style.display = "block";
+    }
+
+    function sendVerificationCode() {
+        alert("Código de verificação enviado para o número informado.");
+        showLogin();
+    }
+
+    function verifyCode() {
+        alert("Código verificado com sucesso!");
+        showLogin();
+    }
+
+    function updateOrder() {
+        const orderCode = document.getElementById("editOrder").value;
+        const newStatus = document.getElementById("progress").value;
+        const newHistory = document.getElementById("stoneHistory").value;
+
+        if (orders[orderCode]) {
+            orders[orderCode].status = newStatus;
+            orders[orderCode].history = newHistory;
+            alert("Pedido atualizado com sucesso.");
+        } else {
+            alert("Código do pedido não encontrado.");
+        }
+    }
+
+    function createUser() {
+        const newUser = document.getElementById("editUser").value;
+        const newPassword = prompt("Digite a nova senha:");
+        users[newUser] = {password: newPassword, role: 'cliente'};
+        alert("Usuário criado com sucesso.");
+    }
+
+    function resetPassword() {
+        const userToReset = document.getElementById("editUser").value;
+        if (users[userToReset]) {
+            users[userToReset].password = prompt("Digite a nova senha:");
+            alert("Senha redefinida com sucesso.");
+        } else {
+            alert("Usuário não encontrado.");
+        }
+    }
+
+    function logout() {
+        document.getElementById("adminContainer").style.display = "none";
+        document.getElementById("clientContainer").style.display = "none";
+        document.getElementById("loginContainer").style.display = "block";
+    }
+</script>
+</body>
+</html>
